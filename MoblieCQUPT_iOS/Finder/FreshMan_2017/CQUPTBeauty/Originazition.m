@@ -57,25 +57,41 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
     _cell = [OriginazitionCell cellWithTableView:_tablesView];
-    if (indexPath.row == 0) {
-        _cell.namesLabel.text = _titleA;
-        _cell.detailLabel.text = _resumeT;
-//        CGSize size = [_resumeT boundingRectWithSize:CGSizeMake(SCREENWIDTH - 50, MAXFLOAT) options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15] }context:nil].size;
-//        _height += (size.height + 80);
+    if (_i == 0) {
+        _cell.namesLabel.text = _dataArray[indexPath.row][@"name"];
+        _cell.detailLabel.text =_dataArray[indexPath.row][@"resume"];
+        if (indexPath.row == _dataArray.count - 1) {
+            _cell.cutLine.backgroundColor = [UIColor whiteColor];
+            UIView *white = [[UIView alloc]initWithFrame:CGRectMake(_cell.frame.origin.x, _cell.frame.origin.y + 130, self.view.size.width, self.view.size.width / 2)];
+            white.backgroundColor = [UIColor whiteColor];
+            [_cell.contentView addSubview:white];
+            
+        }
+        return _cell;
     }
     else{
-    _cell.namesLabel.text = _dataArray[indexPath.row - 1][@"name"];
-    _cell.detailLabel.text =_dataArray[indexPath.row -1][@"resume"];
-//    CGSize size = [_dataArray[indexPath.row -1][@"resume"] boundingRectWithSize:CGSizeMake(SCREENWIDTH - 50, MAXFLOAT) options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*SCREENWIDTH/375] }context:nil].size;
-//    _height += (size.height + 80);
+        if (indexPath.row == 0) {
+            _cell.namesLabel.text = _titleA;
+            _cell.detailLabel.text = _resumeT;
+        }
+        else{
+        _cell.namesLabel.text = _dataArray[indexPath.row - 1][@"name"];
+        _cell.detailLabel.text =_dataArray[indexPath.row -1][@"resume"];
+
+        }
+        if (indexPath.row == _dataArray.count ) {
+            _cell.cutLine.backgroundColor = [UIColor whiteColor];
+        }
+        return _cell;
     }
-    if (indexPath.row == _dataArray.count ) {
-        _cell.cutLine.backgroundColor = [UIColor whiteColor];
-    }
-    return _cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _dataArray.count + 1;
+    if (_i == 0) {
+        return _dataArray.count;
+    }
+    else{
+        return _dataArray.count + 1;
+    }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -83,7 +99,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGSize size;
     if (indexPath.row == 0) {
-        size = [_resumeT boundingRectWithSize:CGSizeMake(SCREENWIDTH - 50, MAXFLOAT) options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*SCREENWIDTH/375] }context:nil].size;
+        size = [_dataArray[indexPath.row][@"resume"] boundingRectWithSize:CGSizeMake(SCREENWIDTH - 50, MAXFLOAT) options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*SCREENWIDTH/375] }context:nil].size;
     }
     else{
         size = [_dataArray[indexPath.row -1][@"resume"] boundingRectWithSize:CGSizeMake(SCREENWIDTH - 50, MAXFLOAT) options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*SCREENWIDTH/375] }context:nil].size;
